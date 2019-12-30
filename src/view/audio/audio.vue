@@ -12,7 +12,6 @@
       </div>
       <div ref="line" class="line">
         <div class="progress" :style="progress">
-
         </div>
         <i @mousedown="mDown($event)" :style="circle" class="el-icon-s-help"></i>
       </div>
@@ -46,6 +45,9 @@
         endX: null,
         value: '',
         duration: null,
+        downLoc: {
+          width: '0%'
+        },
         progress: {
           width: '0%'
         },
@@ -101,9 +103,8 @@
     },
 
     methods: {
-      seltime () {
+      seltime() {
         let a = new Date(this.value1).getTime()
-        console.log(a)
       },
       mOver(e) {
         console.log(e.target.style.left)
@@ -114,24 +115,31 @@
         this.$refs.aud.pause()
         // window.addEventListener('mousemove',self.mMove(e))
         this.startX = e.x
+        console.log(this.startX)
       },
       mMove(e) {
         if (!this.isdown) {
           return
         }
+        console.log('xN--' + e.x)
         let dif = e.x - this.startX
-        let persent = this.progress.width.toString().split('%')[0] / 100
-        let progressW = this.lineW * (persent / 100)
+        let persent = this.downLoc.width.toString().split('%')[0] / 100
+        console.log('per---' + persent)
+        let progressW = this.lineW * persent
+        console.log('pw---' + progressW)
+        console.log('dif---' + dif)
         let positionNow = progressW + dif
-        if (this.index>=2) {
-          console.log(this.progress.width)
-          alert(positionNow)
+        if (this.index >= 2) {
+          //console.log(this.progress.width)
+          // alert(positionNow)
+          // alert(persent)
         }
 
         if (positionNow < 0) {
+          alert(1)
           positionNow = 0
-          this.progress.width = '0px'
-          this.circle.left = '0px'
+          this.progress.width = '0%'
+          this.circle.left = '0%'
           return
         }
         if (positionNow > this.lineW) {
@@ -141,18 +149,34 @@
           return;
         }
         // console.log(positionNow)
-        this.percent = positionNow / this.lineW
-        this.progress.width = `${((positionNow / this.lineW) * 100).toFixed(2)}%`
+        // this.percent = persent
+        this.progress.width = `${((positionNow / this.lineW) * 100).toFixed(4)}%`
         // console.log(this.progress)
-        this.circle.left = `${((positionNow / this.lineW) * 100).toFixed(2)}%`
+        this.circle.left = `${((positionNow / this.lineW) * 100).toFixed(4)}%`
+        this.onmouseout(e)
+      },
+      onmouseout(event) {
+        var div = document.getElementsByClassName("audWrap")[0];
+        var x = event.clientX;
+        var y = event.clientY;
+        var divx1 = div.offsetLeft;
+        var divy1 = div.offsetTop;
+        var divx2 = div.offsetLeft + div.offsetWidth;
+        var divy2 = div.offsetTop + div.offsetHeight;
+        if (x < divx1 || x > divx2 || y < divy1 || y > divy2) {
+          this.mUp()
+        }
       },
       mUp(e) {
         let self = this
+        this.downLoc = this.progress
+        var persent = this.downLoc.width.toString().split('%')[0] / 100
         this.index++
         this.isdown = false
-        this.$refs.aud.currentTime = Math.floor(this.$refs.aud.duration * this.percent)
+        this.$refs.aud.currentTime = Math.floor(this.$refs.aud.duration * persent)
         this.$refs.aud.play()
         this.isplay = true
+
 
       },
       rangeVal(val) {
