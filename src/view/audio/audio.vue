@@ -118,6 +118,7 @@
         console.log(this.startX)
       },
       mMove(e) {
+        console.log(e.target)
         if (!this.isdown) {
           return
         }
@@ -136,7 +137,6 @@
         }
 
         if (positionNow < 0) {
-          alert(1)
           positionNow = 0
           this.progress.width = '0%'
           this.circle.left = '0%'
@@ -156,14 +156,25 @@
         this.onmouseout(e)
       },
       onmouseout(event) {
+        console.log(event)
         var div = document.getElementsByClassName("audWrap")[0];
+        var div2 = document.getElementsByClassName("wrap")[0];
         var x = event.clientX;
         var y = event.clientY;
-        var divx1 = div.offsetLeft;
+        var divx1 = div.offsetLeft +div2.offsetLeft;
         var divy1 = div.offsetTop;
-        var divx2 = div.offsetLeft + div.offsetWidth;
-        var divy2 = div.offsetTop + div.offsetHeight;
+        var divx2 = div.offsetLeft + div.offsetWidth +div2.offsetLeft;
+        var divy2 = div.offsetTop + div.offsetHeight ;
+        console.log('____________')
+        console.log(x)
+        console.log(y)
+        console.log(divx1)
+        console.log(divx2)
+        console.log(divy1)
+        console.log(divy2)
+        console.log('____________')
         if (x < divx1 || x > divx2 || y < divy1 || y > divy2) {
+          alert(1)
           this.mUp()
         }
       },
