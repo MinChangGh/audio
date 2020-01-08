@@ -11,12 +11,17 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/audio'
+      redirect: '/jsonp'
     },
     {
       path: '/audio',
       name: 'audio',
       component: () => import('@/view/audio/audio')
+    },
+    {
+      path: '/jsonp',
+      name: 'jsonp',
+      component: () => import('@/view/jsonp/jsonp')
     }
   ]
 })
