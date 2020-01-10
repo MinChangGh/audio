@@ -2,6 +2,7 @@
   <div>
     <input @change="upload($event)" ref="file" type="file">
     <button @click="merge">提交</button>
+    <video class="video" controls src="http://192.168.0.173:90/video"></video>
   </div>
 </template>
 
@@ -11,11 +12,14 @@
   export default {
     name: "jsonp",
     data() {
-      return {}
+      return {
+        src: null
+      }
     },
     computed: {},
     components: {},
     created() {
+      // this.getVideo()
       // this.getLrc()
       // this.getJs()
 
@@ -25,13 +29,18 @@
     },
 
     methods: {
+      getVideo () {
+        api.get({},'/video').then(res=>{
+          this.src = res
+        })
+      },
       merge () {
         api.get({}, '/merge').then((res) => {
           console.log(res)
         })
       },
       upload(e) {
-        var bytesPerPiece = 10*1024 * 1024; // 每个文件切片大小定为1MB .
+        var bytesPerPiece = 1*1024 * 1024; // 每个文件切片大小定为1MB .
         var totalPieces;
         var blob = e.target.files[0];
         var start = 0;
@@ -85,5 +94,10 @@
 </script>
 
 <style scoped>
+  .video {
+    width: 400px;
+    height: 300px;
+    background: #cccccc;
+  }
 
 </style>
