@@ -62,7 +62,6 @@ export default {
       }
     },
     setCheck (data) {
-      console.log(this.checkList)
       data.color = this.$$.randomHexColor()
       this.$emit('insert', data, this.Dtype)
     }

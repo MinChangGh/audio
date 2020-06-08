@@ -11,7 +11,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/jsonp'
+      redirect: '/js'
     },
     {
       path: '/audio',
@@ -19,9 +19,14 @@ export default new Router({
       component: () => import('@/view/audio/audio')
     },
     {
-      path: '/jsonp',
+      path: '/js',
       name: 'jsonp',
       component: () => import('@/view/jsonp/jsonp')
+    },
+    {
+      path: '/iosUpload',
+      name: 'iosUpload',
+      component: () => import('@/view/jsonp/iosUpload')
     }
   ]
 })
